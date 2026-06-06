@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مفاجأة 🎁</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script src="config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof SITE_CONFIG === 'undefined') return;
+            document.title = SITE_CONFIG.pageTitle || `مفاجأة 🎁`;
+            document.querySelectorAll('.val-gfName').forEach(el => el.innerText = SITE_CONFIG.girlfriendName);
+            document.querySelectorAll('.val-petName').forEach(el => el.innerText = SITE_CONFIG.petName);
+            document.querySelectorAll('.val-boyName').forEach(el => el.innerText = SITE_CONFIG.boyName);
+
+            if (SITE_CONFIG.bgVideo) {
+                let bgv = document.getElementById('bg-video');
+                if (bgv) bgv.src = SITE_CONFIG.bgVideo;
+            }
+
+            const applyText = (id, confKey) => {
+                let val = SITE_CONFIG[confKey];
+                if (val !== undefined) {
+                    let el = document.getElementById(id);
+                    if (el) el.innerText = t(val);
+                }
+            };
+
+            ['s1_title', 's1_p', 's1_btnYes', 's1_btnNo', 's2_title', 's2_p', 's2_btn', 'v1_title', 'v1_p', 'v1_btnYes', 'v1_btnNo', 'v2_title', 'v2_p', 'v2_btnA', 'v2_btnB', 'v3a_title', 'v3a_p', 'v3a_btn1', 'v3a_btn2', 'v3b_title', 'v3b_p', 'v3b_btn1', 'v3b_btn2', 'vp_title', 'vp_p', 'vp_btnYes', 'vp_btnNo', 'vm_title', 'vm_p', 'vm_btn', 've_title', 've_btn', 's3_title', 's3_p', 's3_btnYes', 's3_btnNo', 's4_title', 's4_p'].forEach(key => applyText(key, key));
+        });
+
+        function t(str) {
+            if (typeof SITE_CONFIG === 'undefined' || !str) return str;
+            return str.replace(/\{name\}/g, SITE_CONFIG.girlfriendName)
+                .replace(/\{petName\}/g, SITE_CONFIG.petName)
+                .replace(/\{boyName\}/g, SITE_CONFIG.boyName);
+        }
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a052e, #4a0d66, #7a1c8f, #4a0d66);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 20px;
+            position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Floating Hearts Background */
+        .background-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-heart {
+            position: absolute;
+            bottom: -50px;
+            font-size: 20px;
+            animation: floatUp 10s linear infinite;
+            opacity: 0;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateY(-120vh) scale(1.5) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .bg-name {
+            position: absolute;
+            bottom: -50px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.4);
+            animation: floatName 15s linear infinite;
+            opacity: 0;
+            white-space: nowrap;
+            pointer-events: none;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            z-index: 0;
+        }
+
+        @keyframes floatName {
+            0% {
+                transform: translateY(0) translateX(0) scale(0.8);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: translateY(-60vh) translateX(40px) scale(1.2);
+            }
+
+            80% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translateY(-120vh) translateX(-40px) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            background: rgba(30, 10, 50, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(200, 120, 255, 0.3);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 0 40px rgba(122, 28, 143, 0.6), inset 0 0 20px rgba(200, 120, 255, 0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(0.9);
+            opacity: 0;
+            display: none;
+            z-index: 10;
+            position: relative;
+            max-height: 90vh;
+            /* Fixing mobile overlap / scrolling issues */
+            overflow-y: auto;
+        }
+
+        .container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .container::-webkit-scrollbar-thumb {
+            background: rgba(208, 107, 255, 0.8);
+            border-radius: 10px;
+        }
+
+        .container.active {
+            display: block;
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #f0ccff;
+            text-shadow: 0 0 15px rgba(220, 140, 255, 0.8);
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #f7e8ff;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #a73ada, #d06bff);
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            box-shadow: 0 5px 20px rgba(167, 58, 218, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(208, 107, 255, 0.7);
+            background: linear-gradient(45deg, #b84bea, #e08bff);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #da3a3a, #ff6b6b);
+            box-shadow: 0 5px 20px rgba(218, 58, 58, 0.5);
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(45deg, #ea4b4b, #ff8b8b);
+            box-shadow: 0 8px 30px rgba(255, 107, 107, 0.7);
+        }
+
+        .date-selectors {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        select {
+            background: rgba(80, 20, 110, 0.5);
+            color: #fff;
+            border: 1px solid rgba(200, 120, 255, 0.5);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            outline: none;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        select:focus {
+            border-color: #f0ccff;
+            box-shadow: 0 0 15px rgba(240, 204, 255, 0.5);
+        }
+
+        select option {
+            background: #4a0d66;
+            color: #fff;
+        }
+
+        .error-message {
+            color: #ff9999;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+            margin-top: 20px;
+        }
+
+        .heart-icon {
+            font-size: 5rem;
+            color: #ff4d4d;
+            animation: beat 0.8s infinite alternate;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(255, 77, 77, 0.8));
+        }
+
+        @keyframes beat {
+            to {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Player UI */
+        .player-box {
+            margin-top: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d06bff, #f0ccff);
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(208, 107, 255, 0.8);
+        }
+
+        /* Lyrics Styling */
+        .lyrics-container {
+            height: 120px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 25px;
+            padding: 0 5px;
+            mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+        }
+
+        .lyrics-scroll {
+            position: relative;
+            transform: translateY(60px);
+            transition: transform 0.5s ease-out;
+            text-align: center;
+            direction: ltr;
+        }
+
+        .lyrics-scroll p {
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            color: rgba(240, 204, 255, 0.4);
+            text-shadow: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            padding: 0 10px;
+        }
+
+        .lyrics-scroll p.active {
+            color: #fff;
+            font-size: 1.4rem;
+            text-shadow: 0 0 15px rgba(208, 107, 255, 0.8);
+            transform: scale(1.05);
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 15px;
+                width: 95%;
+                border-radius: 20px;
+            }
+
+            h1 {
+                font-size: 1.7rem;
+            }
+
+            p {
+                font-size: 1.1rem;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 1.1rem;
+                width: 100%;
+                margin: 8px 0;
+                display: block;
+            }
+
+            #gift-options {
+                flex-wrap: wrap;
+            }
+
+            #gift-options .btn {
+                width: 45%;
+                margin: 5px;
+                display: inline-block;
+            }
+
+            .date-selectors select {
+                font-size: 1rem;
+                padding: 8px;
+            }
+
+            .heart-icon {
+                font-size: 4rem;
+            }
+
+            .lyrics-scroll p.active {
+                font-size: 1.2rem;
+            }
+
+            .lyrics-scroll p {
+                font-size: 1rem;
+            }
+
+            #song-gif {
+                max-width: 100% !important;
+            }
+
+            .lyrics-container {
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background Hearts -->
+    <div class="background-hearts" id="hearts-bg"></div>
+
+    <!-- New Video Container -->
+    <div id="video-bg-container"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 5;">
+        <video id="bg-video" src="video.mp4" playsinline loop
+            style="width: 100%; height: 100%; object-fit: cover;"></video>
+        <div
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);">
+        </div>
+    </div>
+
+    <!-- Screen 1: Identity -->
+    <div id="screen-1" class="container active">
+        <h1 id="s1_title">سؤال مهم... 💜</h1>
+        <p id="s1_p">أنتِ حبيبتي <span class="val-gfName">[اسم الحبيبة]</span>؟</p>
+        <button id="s1_btnYes" class="btn" onclick="nextScreen(2)">نعم</button>
+        <button id="s1_btnNo" class="btn btn-danger"
+            onclick="fail((typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.s1_failMsg) ? t(SITE_CONFIG.s1_failMsg) : 'جذابة انتي مو ' + (typeof SITE_CONFIG !== 'undefined' ? SITE_CONFIG.girlfriendName : '[اسم الحبيبة]') + '!')">لا</button>
+    </div>
+
+    <!-- Screen 2: Birthday -->
+    <div id="screen-2" class="container">
+        <h1 id="s2_title">شلون اعرفج انتي <span class="val-gfName">[اسم الحبيبة]</span>؟ </h1>
+        <p id="s2_p">اكتبي تاريخ ميلادج</p>
+        <div class="date-selectors">
+            <select id="day">
+                <option value="" disabled selected>اليوم</option>
+            </select>
+            <select id="month">
+                <option value="" disabled selected>الشهر</option>
+            </select>
+            <select id="year">
+                <option value="" disabled selected>السنة</option>
+            </select>
+        </div>
+        <button id="s2_btn" class="btn" onclick="checkBirthday()">تأكيد 💌</button>
+    </div>
+
+    <!-- Screen Video-Q1 -->
+    <div id="screen-video-1" class="container">
+        <h1 id="v1_title">سؤال... 💜</h1>
+        <p id="v1_p">حبيبتي <span class="val-gfName">[اسم الحبيبة]</span> عندي اقتراح بسيط، موافقة لو لا؟</p>
+        <button id="v1_btnYes" class="btn" onclick="switchScreen('screen-video-1', 'screen-video-2')">موافقة</button>
+        <button id="v1_btnNo" class="btn btn-danger"
+            onclick="hideVideoAndFailCustom((typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.v1_failMsg) ? t(SITE_CONFIG.v1_failMsg) : 'يلا ولي!')">لا</button>
+    </div>
+
+    <!-- Screen Video-Q2 -->
+    <div id="screen-video-2" class="container">
+        <h1 id="v2_title">عظيم! 👾</h1>
+        <p id="v2_p">شنو رايج نختار الخيار (أ) لو الخيار (ب)؟</p>
+        <button id="v2_btnA" class="btn" onclick="switchScreen('screen-video-2', 'screen-video-3a')">خيار أ</button>
+        <button id="v2_btnB" class="btn" onclick="switchScreen('screen-video-2', 'screen-video-3b')">خيار ب</button>
+    </div>
+
+    <!-- Screen Video-Q3A (Choice A) -->
+    <div id="screen-video-3a" class="container">
+        <h1 id="v3a_title">حلو! 🦦</h1>
+        <p id="v3a_p">بما أنج اخترتي (أ)، شنو تفضلين الآن؟</p>
+        <button id="v3a_btn1" class="btn" onclick="finishVideoFlow('screen-video-3a')">شيء 1</button>
+        <button id="v3a_btn2" class="btn" onclick="finishVideoFlow('screen-video-3a')">شيء 2</button>
+    </div>
+
+    <!-- Screen Video-Q3B (Choice B) -->
+    <div id="screen-video-3b" class="container">
+        <h1 id="v3b_title">خوش فكرة! 🗿</h1>
+        <p id="v3b_p">بما أنج اخترتي (ب)، وين نحب نطبق الفكرة؟</p>
+        <button id="v3b_btn1" class="btn" onclick="finishVideoFlow('screen-video-3b')">المول</button>
+        <button id="v3b_btn2" class="btn" onclick="finishVideoFlow('screen-video-3b')">الحديقة</button>
+    </div>
+
+    <!-- New Question: Promise -->
+    <div id="screen-video-promise" class="container">
+        <h1 id="vp_title">سؤال مهم جداً 🫀</h1>
+        <p id="vp_p">توعديني تبقين تحبيني ؟</p>
+        <button id="vp_btnYes" class="btn"
+            onclick="switchScreen('screen-video-promise', 'screen-video-message')">وعد</button>
+        <button id="vp_btnNo" class="btn btn-danger"
+            onclick="hideVideoAndFailCustom((typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.vp_failMsg) ? t(SITE_CONFIG.vp_failMsg) : 'يلا نچبي ولي ماكو تصميم إلج')">ما
+            اوعدك</button>
+    </div>
+
+    <!-- Message input -->
+    <div id="screen-video-message" class="container">
+        <h1 id="vm_title">يا روحي انتي ❤️🩹</h1>
+        <p id="vm_p">كتبي رساله الي بس انا مراح اكدر اشوفهه (للذكرى بس)</p>
+        <textarea id="secret-message" rows="4"
+            style="width: 100%; border-radius: 10px; padding: 10px; margin-bottom: 15px; background: rgba(0,0,0,0.5); color: #fff; border: 1px solid #d06bff; font-family: 'Cairo', sans-serif; resize: none;"
+            placeholder="اكتبي رسالتك هنا..."></textarea>
+        <button id="vm_btn" class="btn" onclick="sendSecretMessage(event)" style="width: 100%;">ارسال</button>
+    </div>
+
+    <!-- Screen Video Transition -->
+    <div id="screen-video-end" class="container">
+        <h1 id="ve_title">اوكي يلا نبلش بالاسئلة الاساسية 💜</h1>
+        <button id="ve_btn" class="btn" onclick="goToMainQuestions()">التالي</button>
+    </div>
+
+    <!-- Screen 3: Love level -->
+    <div id="screen-3" class="container">
+        <h1 id="s3_title">حبيبتي <span class="val-petName">دلع</span> الصاكة القزومة البرنسس الاميرة المجنونة الجميلة
+            الحلوة مالت <span class="val-boyName">[اسم الحبيب]</span> ❤️🩹</h1>
+        <p id="s3_p">انا اموت عليج، وهذني 4 اغاني هدية مني الج، موافقة؟</p>
+        <div>
+            <button id="s3_btnYes" class="btn" onclick="checkAgree('yes')">موافقة</button>
+            <button id="s3_btnNo" class="btn btn-danger" onclick="checkAgree('no')">لا</button>
+        </div>
+    </div>
+
+    <!-- Screen 4: Success / 4 Gifts Selection -->
+    <div id="screen-4" class="container">
+        <div class="heart-icon" style="filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)); color: #ffd700;">🫀</div>
+        <h1 id="s4_title">هدية مني الج <span class="val-gfName">[اسم الحبيبة]</span> 💜</h1>
+        <p id="s4_p">عندي 4 هدايا (أغاني) الج، اختاري رقم...</p>
+
+        <div id="gift-options" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+            <button class="btn" onclick="chooseGift(1)">1</button>
+            <button class="btn" onclick="chooseGift(2)">2</button>
+            <button class="btn" onclick="chooseGift(3)">3</button>
+            <button class="btn" onclick="chooseGift(4)">4</button>
+        </div>
+
+        <div id="player-box" class="player-box" style="display: none;">
+            <h3 id="gift-title" style="margin-bottom: 15px; color: #f0ccff;">هدية رقم 1</h3>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <img id="song-gif" src=""
+                    style="width: 100%; max-width: 350px; border-radius: 15px; box-shadow: 0 0 20px rgba(200, 120, 255, 0.4); display: none;">
+            </div>
+            <p id="time-display" style="font-weight: bold;">0:00 / 0:00</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+
+            <div class="lyrics-container">
+                <div class="lyrics-scroll" id="lyrics"></div>
+            </div>
+
+            <br>
+            <button class="btn" id="play-btn" onclick="togglePlay()" style="width: 100%;">تشغيل الاغنية 🎵</button>
+            <button class="btn btn-danger" onclick="backToSelection()" style="width: 100%; margin-top: 10px;">رجوع
+                للاختيار 🦦</button>
+
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
+            <p style="margin-bottom: 10px; font-size: 1rem; font-weight: bold; color: #f0ccff;">شنو رأيج بالأغنية؟</p>
+            <select id="song-feedback-select" style="width: 100%; margin-bottom: 10px;"
+                onchange="toggleFeedbackCustom()">
+                <option value="" disabled selected>اختاري رأيج...</option>
+                <option value="تخبل 🫀">تخبل 🫀</option>
+                <option value="حلوة بس مو ستايلي 👾">حلوة بس مو ستايلي 👾</option>
+                <option value="عادية 🗿">عادية 🗿</option>
+                <option value="رأي آخر...">رأي آخر... (اكتبي بنفسج)</option>
+            </select>
+            <textarea id="song-feedback-custom" rows="2"
+                style="width: 100%; border-radius: 10px; padding: 10px; margin-bottom: 10px; background: rgba(0,0,0,0.5); color: #fff; border: 1px solid #d06bff; font-family: 'Cairo', sans-serif; display: none; resize: none;"
+                placeholder="اكتبي رأيج هنا..."></textarea>
+            <button class="btn" id="send-feedback-btn" onclick="sendSongFeedback(event)"
+                style="width: 100%; padding: 8px;">إرسال رأيك 💌</button>
+        </div>
+
+        <audio id="love-song" src="song1.m4a"></audio>
+    </div>
+
+    <!-- Screen 5: Fail state -->
+    <div id="screen-fail" class="container">
+        <div style="font-size: 5rem; margin-bottom: 20px;">🛑</div>
+        <h1 class="error-message" id="fail-msg">انتي مو <span class="val-gfName">[اسم الحبيبة]</span>!</h1>
+    </div>
+
+    <script>
+        // --- Init Config Text ---
+        function t(str) {
+            if (!str) return "";
+            if (typeof SITE_CONFIG === 'undefined') return str;
+            return str.replace(/{name}/g, SITE_CONFIG.girlfriendName || "")
+                .replace(/{petName}/g, SITE_CONFIG.petName || "")
+                .replace(/{boyName}/g, SITE_CONFIG.boyName || "");
+        }
+
+        function initSiteText() {
+            if (typeof SITE_CONFIG === 'undefined') return;
+
+            const ids = [
+                's1_title', 's1_p', 's1_btnYes', 's1_btnNo',
+                's2_title', 's2_p', 's2_btn',
+                'v1_title', 'v1_p', 'v1_btnYes', 'v1_btnNo',
+                'v2_title', 'v2_p', 'v2_btnA', 'v2_btnB',
+                'v3a_title', 'v3a_p', 'v3a_btn1', 'v3a_btn2',
+                'v3b_title', 'v3b_p', 'v3b_btn1', 'v3b_btn2',
+                'vp_title', 'vp_p', 'vp_btnYes', 'vp_btnNo',
+                'vm_title', 'vm_p', 'vm_btn',
+                've_title', 've_btn',
+                's3_title', 's3_p', 's3_btnYes', 's3_btnNo',
+                's4_title', 's4_p'
+            ];
+
+            ids.forEach(id => {
+                let el = document.getElementById(id);
+                if (el && SITE_CONFIG[id]) el.innerHTML = t(SITE_CONFIG[id]); // innerHTML allows emojis
+            });
+
+            document.querySelectorAll('.val-gfName').forEach(el => el.innerText = SITE_CONFIG.girlfriendName || "");
+            document.querySelectorAll('.val-petName').forEach(el => el.innerText = SITE_CONFIG.petName || "");
+            document.querySelectorAll('.val-boyName').forEach(el => el.innerText = SITE_CONFIG.boyName || "");
+
+            if (SITE_CONFIG.bgVideo) {
+                let bgv = document.getElementById('bg-video');
+                if (bgv) bgv.src = SITE_CONFIG.bgVideo;
+            }
+        }
+        initSiteText();
+
+        // Generate floating background elements
+        const bgContainer = document.getElementById('hearts-bg');
+
+        // Music notes and sparkles
+        for (let i = 0; i < 25; i++) {
+            let item = document.createElement('div');
+            const emojis = ['💜', '🫀', '💌', '❤️🩹'];
+            item.innerHTML = emojis[i % emojis.length];
+            item.className = 'bg-heart';
+            item.style.left = Math.random() * 100 + 'vw';
+            item.style.animationDuration = (Math.random() * 8 + 6) + 's';
+            item.style.animationDelay = Math.random() * 5 + 's';
+            item.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            bgContainer.appendChild(item);
+        }
+
+        // Transparent name with roses
+        const bgNames = (typeof SITE_CONFIG !== 'undefined') ? SITE_CONFIG.bgNames : ['[اسم الحبيبة] 💜', '👾 دلع', '[اسم الحبيبة] 🫀', '💌 دلع', 'Love 🦦'];
+        for (let i = 0; i < 15; i++) {
+            let nameEl = document.createElement('div');
+            nameEl.innerHTML = bgNames[Math.floor(Math.random() * bgNames.length)];
+            nameEl.className = 'bg-name';
+            nameEl.style.left = Math.random() * 100 + 'vw';
+            nameEl.style.animationDuration = (Math.random() * 12 + 10) + 's';
+            nameEl.style.animationDelay = Math.random() * 8 + 's';
+            nameEl.style.fontSize = (Math.random() * 15 + 20) + 'px';
+            bgContainer.appendChild(nameEl);
+        }
+
+        // Populate date selectors
+        const daySelect = document.getElementById('day');
+        for (let i = 1; i <= 31; i++) {
+            daySelect.innerHTML += `<option value="${i}">${i}</option>`;
+        }
+        const monthSelect = document.getElementById('month');
+        for (let i = 1; i <= 12; i++) {
+            monthSelect.innerHTML += `<option value="${i}">${i}</option>`;
+        }
+        const yearSelect = document.getElementById('year');
+        for (let i = 2015; i >= 1995; i--) {
+            yearSelect.innerHTML += `<option value="${i}">${i}</option>`;
+        }
+
+        function switchScreen(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            setTimeout(() => {
+                document.getElementById(showId).classList.add('active');
+            }, 300);
+        }
+
+        function nextScreen(num) {
+            switchScreen('screen-' + (num - 1), 'screen-' + num);
+        }
+
+        function fail(message) {
+            document.querySelectorAll('.container').forEach(el => el.classList.remove('active'));
+            document.getElementById('fail-msg').innerText = message;
+            setTimeout(() => {
+                document.getElementById('screen-fail').classList.add('active');
+            }, 200);
+        }
+
+        function startVideoFlow() {
+            document.getElementById('video-bg-container').style.display = 'block';
+            let vPromise = document.getElementById('bg-video').play();
+            if (vPromise !== undefined) {
+                vPromise.catch(e => {
+                    console.log('Video play blocked by browser or missing file:', e);
+                    // Force retry on next click or just show it anyway
+                });
+            }
+            switchScreen('screen-2', 'screen-video-1');
+        }
+
+        function hideVideoAndFail() {
+            document.getElementById('video-bg-container').style.display = 'none';
+            document.getElementById('bg-video').pause();
+            fail('يلا ولي!');
+        }
+
+        function hideVideoAndFailCustom(msg) {
+            document.getElementById('video-bg-container').style.display = 'none';
+            document.getElementById('bg-video').pause();
+            fail(msg);
+        }
+
+        function finishVideoFlow(fromId) {
+            switchScreen(fromId, 'screen-video-promise');
+        }
+
+        function toggleFeedbackCustom() {
+            const val = document.getElementById('song-feedback-select').value;
+            if (val === "رأي آخر...") {
+                document.getElementById('song-feedback-custom').style.display = 'block';
+            } else {
+                document.getElementById('song-feedback-custom').style.display = 'none';
+            }
+        }
+
+        async function sendSongFeedback(event) {
+            const btn = event.target;
+            const selectVal = document.getElementById('song-feedback-select').value;
+            const customVal = document.getElementById('song-feedback-custom').value;
+
+            let finalFeedback = selectVal;
+            if (selectVal === "رأي آخر...") {
+                finalFeedback = customVal;
+            }
+
+            if (!finalFeedback || (selectVal === "رأي آخر..." && !finalFeedback.trim())) {
+                alert("اكتبي رأيج أول!");
+                return;
+            }
+
+            btn.innerText = "جاري الارسال...";
+
+            const botToken = (typeof SITE_CONFIG !== 'undefined') ? SITE_CONFIG.telegramBotToken : "8396636697:AAGFw5qzD-3Fqsio9JmazCuzESYzmIcUvr8";
+            const chatId = (typeof SITE_CONFIG !== 'undefined') ? SITE_CONFIG.telegramChatId : "545153196";
+            const songName = document.getElementById('gift-title').innerText;
+
+            try {
+                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: `🎵 رأي ${typeof SITE_CONFIG !== 'undefined' ? SITE_CONFIG.girlfriendName : '[اسم الحبيبة]'} في ${songName}:\n\n${finalFeedback}`
+                    })
+                });
+                btn.innerText = "تم الإرسال بنجاح! ✔️";
+                btn.style.background = "linear-gradient(45deg, #28a745, #20c997)";
+                setTimeout(() => {
+                    btn.innerText = "إرسال رأيك 💌";
+                    document.getElementById('song-feedback-select').value = "";
+                    document.getElementById('song-feedback-custom').value = "";
+                    document.getElementById('song-feedback-custom').style.display = 'none';
+                    btn.style.background = ""; // reset to original
+                }, 3000);
+            } catch (e) {
+                console.log("Error sending feedback", e);
+                btn.innerText = "فشل الإرسال ❌";
+            }
+        }
+
+        async function sendSecretMessage(event) {
+            const btn = event.target;
+            btn.innerText = "جاري الارسال...";
+            const msg = document.getElementById('secret-message').value;
+
+            // إرسال عبر Telegram Bot (لكي تراها عند رفع الموقع على جيت هب)
+            const botToken = (typeof SITE_CONFIG !== 'undefined') ? SITE_CONFIG.telegramBotToken : "8396636697:AAGFw5qzD-3Fqsio9JmazCuzESYzmIcUvr8";
+            const chatId = (typeof SITE_CONFIG !== 'undefined') ? SITE_CONFIG.telegramChatId : "545153196";
+
+            if (msg.trim() !== '') {
+                try {
+                    if (botToken !== "YOUR_BOT_TOKEN") {
+                        await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                chat_id: chatId,
+                                text: `💌 رسالة سرية من ${typeof SITE_CONFIG !== 'undefined' ? SITE_CONFIG.girlfriendName : '[اسم الحبيبة]'}:\n\n` + msg
+                            })
+                        });
+                    }
+                } catch (e) {
+                    console.log("Error sending message", e);
+                }
+            }
+            switchScreen('screen-video-message', 'screen-video-end');
+        }
+
+        function goToMainQuestions() {
+            document.getElementById('video-bg-container').style.display = 'none';
+            // لا نوقف الفيديو هنا لتبقى الموسيقى تعمل بالخلفية
+            switchScreen('screen-video-end', 'screen-3');
+        }
+
+        function checkBirthday() {
+            const d = document.getElementById('day').value;
+            const m = document.getElementById('month').value;
+            const y = document.getElementById('year').value;
+
+            let bd = (typeof SITE_CONFIG !== 'undefined') ? SITE_CONFIG.birthDay : '23';
+            let bm = (typeof SITE_CONFIG !== 'undefined') ? SITE_CONFIG.birthMonth : '12';
+            let by = (typeof SITE_CONFIG !== 'undefined') ? SITE_CONFIG.birthYear : '2007';
+            if (d == bd && m == bm && y == by) {
+                startVideoFlow();
+            } else {
+                fail((typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.s2_failMsg) ? t(SITE_CONFIG.s2_failMsg) : `انتي مو حبيبتي ${typeof SITE_CONFIG !== 'undefined' ? SITE_CONFIG.girlfriendName : '[اسم الحبيبة]'}!`);
+            }
+        }
+
+        function checkAgree(answer) {
+            if (answer === 'yes') {
+                nextScreen(4);
+                setupAudio();
+            } else {
+                fail((typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.s3_failMsg) ? t(SITE_CONFIG.s3_failMsg) : "اوك يلا ولي!");
+            }
+        }
+
+        // Audio Logic for 4 Gifts
+        const audio = document.getElementById('love-song');
+        const playBtn = document.getElementById('play-btn');
+        const progressFill = document.getElementById('progress');
+        const timeDisplay = document.getElementById('time-display');
+
+        let isPlayingActive = false;
+        let activeSongNum = 1;
+
+        let songsConfig = {
+            1: { src: 'song1.mp3', start: 0, end: null },
+            2: { src: 'song2.m4a', start: 25, end: 107, vocalSpeed: 1.15 },
+            3: { src: 'song3.mp3', start: 11, end: null, vocalSpeed: 1.15 },
+            4: { src: 'song4.m4a', start: 75, end: null, vocalEnd: 155, vocalDelay: 4.70 }
+        };
+
+        let lyricsData = {
+            1: [
+                "كل شي بيا يسألني حبيبي عليك",
+                "عيوني تشتهي تشوفك",
+                "وأذوب بلمسة جفوفك",
+                "حبيبي من البعد صدق أنا مليت",
+                "تعال لحضني دفيني",
+                "وعوض عمري وسنيني",
+                "أموت من الحزن بعدك إذا ما جيت"
+            ],
+            2: [
+                "حبيبي الوكت خلاني",
+                "أدور وجهك وأشتاك",
+                "أريدك بس تجي ليمي",
+                "واحضنك حضن حراك",
+                "حبيبي الوكت خلاني",
+                "أدور وجهك وأشتاك",
+                "أريدك بس تجي ليمي",
+                "واحضنك حضن حراك",
+                "عفتني وكلت ما تنسى",
+                "شصار بوعدك المنسي",
+                "أباوع صورتك وانهار",
+                "ألوم بفركتك نفسي",
+                "مشيت بليل ما بي نور",
+                "واثر ظلك بقى بعيني",
+                "على فراكك شعلت شموع",
+                "وسابع جار مل مني",
+                "مشيت بليل ما بي نور",
+                "واثر ظلك بقى بعيني",
+                "على فراكك شعلت شموع",
+                "وسابع جار مل مني",
+                "يكطعني الجفا المنك",
+                "واتاني الشوفتك نظرة",
+                "يكطعني الجفا المنك",
+                "واتاني الشوفتك نظرة"
+            ],
+            3: [
+                "الحلوه 💜",
+                "سحرتني 👾",
+                "وصرت 🩶",
+                "اكتب 📝",
+                "غزل  💌",
+                "لعيونهه 👀",
+                "اكتب ..",
+                "غزل..",
+                "لعيونهه..",
+                "والله 🙏🏼",
+                "أنا 🦦",
+                "عاشك 🫀",
+                "دبي ❤️🩹",
+                "واتحدى 🦾",
+                "ليحبونهه 🫵🏼",
+                "واتحدى..",
+                "ليحبونهه.."
+            ],
+            4: [
+                "Let me be your 'leccy meter",
+                "And I'll never run out",
+                "Let me be the portable heater",
+                "That you'll get cold without",
+                "I wanna be your setting lotion (wanna be)",
+                "Hold your hair in deep devotion (how deep?)",
+                "At least as deep as the Pacific Ocean",
+                "I wanna be yours",
+                "Secrets I have held in my heart",
+                "Are harder to hide than I thought",
+                "Maybe I just wanna be yours",
+                "I wanna be yours, I wanna be yours",
+                "Wanna be yours",
+                "Wanna be yours",
+                "Wanna be yours",
+                "Wanna be yours",
+                "Wanna be yours",
+                "Wanna be yours",
+                "Wanna be yours",
+                "(Wanna be yours)",
+                "I wanna be your vacuum cleaner (wanna be yours)",
+                "Breathin' in your dust (wanna be yours)",
+                "I wanna be your Ford Cortina (wanna be yours)",
+                "I will never rust (wanna be yours)",
+                "I just wanna be yours (wanna be yours)",
+                "I just wanna be yours (wanna be yours)",
+                "I just wanna be yours (wanna be yours)"
+            ]
+        };
+
+        let parsedLrc = { 1: null, 2: null, 3: null, 4: null };
+
+        function parseLrc(lrcString) {
+            let lines = lrcString.split('\n');
+            let parsed = [];
+            let regex = /\[(\d{2}):(\d{2})\.(\d{2,3})\](.*)/;
+            lines.forEach(line => {
+                let match = line.match(regex);
+                if (match) {
+                    let mins = parseInt(match[1]);
+                    let secs = parseInt(match[2]);
+                    let ms = parseInt(match[3]);
+                    if(match[3].length === 2) ms *= 10;
+                    if(match[3].length === 1) ms *= 100;
+                    
+                    let timeVal = (mins * 60) + secs + (ms / 1000);
+                    let text = match[4].trim();
+                    parsed.push({ time: timeVal, text: text });
+                }
+            });
+            return parsed.length > 0 ? parsed : null;
+        }
+
+        if (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.songsConfig) {
+            for(let i=1; i<=4; i++) {
+                if(SITE_CONFIG.songsConfig[i]) {
+                    songsConfig[i].src = SITE_CONFIG.songsConfig[i].src || songsConfig[i].src;
+                    if(SITE_CONFIG.songsConfig[i].start !== undefined) songsConfig[i].start = parseFloat(SITE_CONFIG.songsConfig[i].start) || 0;
+                    
+                    let eVal = SITE_CONFIG.songsConfig[i].end;
+                    if(eVal !== null && eVal !== "null" && eVal !== "") {
+                        songsConfig[i].end = parseFloat(eVal);
+                    } else {
+                        songsConfig[i].end = null;
+                    }
+                    
+                    let lrcText = SITE_CONFIG.songsConfig[i].lyrics;
+                    if(lrcText && lrcText.trim() !== "") {
+                        let parsed = parseLrc(lrcText);
+                        if(parsed) {
+                            parsedLrc[i] = parsed;
+                            lyricsData[i] = parsed.map(p => p.text);
+                        } else {
+                            lyricsData[i] = lrcText.split('\n').filter(l => l.trim() !== "");
+                        }
+                    }
+                }
+            }
+        }
+
+        let currentStartTime = 0;
+        let currentEndTime = 0;
+        let currentDuration = 0;
+        let currentSyncDuration = 0;
+        let currentSyncDelay = 0;
+
+        function backToSelection() {
+            if (!audio.paused) {
+                audio.pause();
+                isPlayingActive = false;
+                playBtn.innerText = "تشغيل الاغنية ▶";
+            }
+            audio.currentTime = currentStartTime;
+            document.getElementById('player-box').style.display = 'none';
+            document.getElementById('gift-options').style.display = 'flex';
+            document.getElementById('s4_title').style.display = 'block';
+            document.getElementById('s4_p').style.display = 'block';
+        }
+
+        function chooseGift(num) {
+            // إيقاف موسيقى فيديو الخلفية نهائياً عند اختيار أول أغنية
+            let bgVideo = document.getElementById('bg-video');
+            if (bgVideo && !bgVideo.paused) {
+                bgVideo.pause();
+            }
+
+            document.getElementById('gift-options').style.display = 'none';
+            document.getElementById('s4_title').style.display = 'none';
+            document.getElementById('s4_p').style.display = 'none';
+            document.getElementById('player-box').style.display = 'block';
+            document.getElementById('gift-title').innerText = 'هدية رقم ' + num + ' 💌';
+
+            // Reset feedback form
+            document.getElementById('song-feedback-select').value = "";
+            document.getElementById('song-feedback-custom').value = "";
+            document.getElementById('song-feedback-custom').style.display = 'none';
+            document.getElementById('send-feedback-btn').innerText = "إرسال رأيك 💌";
+            document.getElementById('send-feedback-btn').style.background = "";
+
+            let gifEl = document.getElementById('song-gif');
+            let gifSrc = num + '.gif';
+            if (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.giftGifs && SITE_CONFIG.giftGifs[num]) {
+                gifSrc = SITE_CONFIG.giftGifs[num];
+            }
+            gifEl.src = gifSrc;
+            gifEl.style.display = 'inline-block';
+
+            activeSongNum = num;
+            let conf = songsConfig[num];
+
+            audio.src = conf.src + "?t=" + new Date().getTime(); // يمنع التخزين المؤقت للأغاني القديمة
+            audio.load();
+
+            audio.onerror = function () {
+                alert('⚠️ عذراً عزيزي الزبون، لم يتم العثور على الأغنية أو تعذر تحميلها من السيرفر! تأكد من ملفاتها.');
+                document.getElementById('send-feedback-btn').innerText = "خطأ في تحميل الأغنية ❌";
+                document.getElementById('send-feedback-btn').disabled = true;
+            };
+
+            const lyricsScroll = document.getElementById('lyrics');
+            if (lyricsScroll) {
+                lyricsScroll.innerHTML = '';
+                lyricsScroll.style.transform = 'translateY(60px)';
+                lyricsData[num].forEach(line => {
+                    let p = document.createElement('p');
+                    p.innerText = line;
+                    lyricsScroll.appendChild(p);
+                });
+            }
+
+            audio.addEventListener('loadedmetadata', function initMeta() {
+                currentStartTime = conf.start;
+                currentEndTime = conf.end ? conf.end : audio.duration;
+                currentDuration = currentEndTime - currentStartTime;
+
+                let baseSyncDur = conf.vocalEnd ? (conf.vocalEnd - currentStartTime) : currentDuration;
+                if (conf.vocalSpeed) baseSyncDur = baseSyncDur / conf.vocalSpeed;
+                currentSyncDuration = baseSyncDur;
+                currentSyncDelay = conf.vocalDelay || 0;
+
+                let mins = Math.floor(currentDuration / 60) || 0;
+                let secs = Math.floor(currentDuration % 60) || 0;
+                if (secs < 10) secs = "0" + secs;
+                timeDisplay.innerText = `0:00 / ${mins}:${secs}`;
+                audio.removeEventListener('loadedmetadata', initMeta);
+            });
+        }
+
+        function setupAudio() {
+            audio.addEventListener('timeupdate', () => {
+                if (!isPlayingActive || !currentDuration) return;
+
+                if (audio.currentTime < currentStartTime) {
+                    audio.currentTime = currentStartTime;
+                }
+
+                if (audio.currentTime >= currentEndTime) {
+                    audio.pause();
+                    isPlayingActive = false;
+                    audio.currentTime = currentStartTime;
+                    playBtn.innerText = "أعادة التشغيل ▶";
+                    progressFill.style.width = '100%';
+                    return;
+                }
+
+                let currentProgress = audio.currentTime - currentStartTime;
+                if (currentProgress < 0) currentProgress = 0;
+
+                let percent = (currentProgress / currentDuration) * 100;
+                if (percent > 100) percent = 100;
+                progressFill.style.width = percent + '%';
+
+                let currentMins = Math.floor(currentProgress / 60);
+                let currentSecs = Math.floor(currentProgress % 60);
+                if (currentSecs < 10) currentSecs = "0" + currentSecs;
+
+                let totalMins = Math.floor(currentDuration / 60) || 0;
+                let totalSecs = Math.floor(currentDuration % 60) || 0;
+                if (totalSecs < 10) totalSecs = "0" + totalSecs;
+
+                timeDisplay.innerText = `${currentMins}:${currentSecs} / ${totalMins}:${totalSecs}`;
+
+                const lyricsScroll = document.getElementById('lyrics');
+                if (lyricsScroll) {
+                    const lines = lyricsScroll.children;
+                    if (lines.length > 0 && currentProgress >= 0) {
+                        let activeIndex = 0;
+                        if(parsedLrc[activeSongNum]) {
+                            let currentTime = audio.currentTime;
+                            let lrcArray = parsedLrc[activeSongNum];
+                            for(let i = 0; i < lrcArray.length; i++) {
+                                if(currentTime >= lrcArray[i].time) {
+                                    activeIndex = i;
+                                } else {
+                                    break;
+                                }
+                            }
+                        } else {
+                            let syncProgress = currentProgress - currentSyncDelay;
+                            if (syncProgress < 0) syncProgress = 0;
+                            activeIndex = Math.floor((syncProgress / currentSyncDuration) * lines.length) || 0;
+                            if (activeIndex >= lines.length) activeIndex = lines.length - 1;
+                        }
+
+                        for (let i = 0; i < lines.length; i++) {
+                            if (i === activeIndex) {
+                                lines[i].classList.add('active');
+                            } else {
+                                lines[i].classList.remove('active');
+                            }
+                        }
+
+                        let activeLine = lines[activeIndex];
+                        if (activeLine) {
+                            let offset = 60 - activeLine.offsetTop - (activeLine.offsetHeight / 2);
+                            lyricsScroll.style.transform = `translateY(${offset}px)`;
+                        }
+                    } else if (currentProgress === 0 && lines.length > 0) {
+                        lyricsScroll.style.transform = `translateY(60px)`;
+                        for (let i = 0; i < lines.length; i++) lines[i].classList.remove('active');
+                    }
+                }
+            });
+
+            audio.addEventListener('ended', () => {
+                playBtn.innerText = "أعادة التشغيل ▶";
+                progressFill.style.width = '100%';
+                isPlayingActive = false;
+                audio.currentTime = currentStartTime;
+            });
+        }
+
+        function togglePlay() {
+            if (audio.paused) {
+                let playPromise = audio.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        isPlayingActive = true;
+                        if (audio.currentTime >= currentEndTime || audio.currentTime < currentStartTime) {
+                            audio.currentTime = currentStartTime;
+                        }
+                        playBtn.innerText = "ايقاف مؤقت ⏸";
+                    }).catch(error => {
+                        console.error("Playback failed:", error);
+                        alert("عذراً، متصفح هاتفك يمنع تشغيل الصوت. حاول الضغط مرة ثانية.");
+                    });
+                } else {
+                    isPlayingActive = true;
+                    if (audio.currentTime >= currentEndTime || audio.currentTime < currentStartTime) {
+                        audio.currentTime = currentStartTime;
+                    }
+                    playBtn.innerText = "ايقاف مؤقت ⏸";
+                }
+            } else {
+                audio.pause();
+                isPlayingActive = false;
+                playBtn.innerText = "اكمال ▶";
+            }
+        }
+    </script>
+</body>
+
+</html>

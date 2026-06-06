@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة المطور | تخصيص الموقع</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: #1a052e; color: #fff; padding: 20px; margin: 0; }
+        .container { max-width: 900px; margin: auto; background: rgba(255,255,255,0.05); padding: 30px; border-radius: 15px; border: 1px solid rgba(200, 120, 255, 0.3); }
+        h1 { text-align: center; color: #f0ccff; margin-bottom: 20px; }
+        p { text-align: center; color: #ccc; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #d06bff; font-size: 0.95rem; }
+        input[type="text"], input[type="number"], select { display: block; width: 100%; box-sizing: border-box; padding: 10px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(0, 0, 0, 0.3); color: #fff; font-size: 1rem; }
+        input:focus { outline: none; border-color: #f0ccff; }
+        .row { display: flex; gap: 15px; flex-wrap: wrap; }
+        .row > div { flex: 1; min-width: 200px; }
+        .btn-submit { background: linear-gradient(45deg, #a73ada, #d06bff); color: white; cursor: pointer; font-weight: bold; font-size: 1.2rem; display: block; width: 100%; padding: 15px; border-radius: 8px; border: none; margin-top: 30px; transition: transform 0.2s; box-shadow: 0 5px 15px rgba(167, 58, 218, 0.4); }
+        .btn-submit:hover { transform: scale(1.02); }
+        
+        /* القسم المنبثق للإعدادات */
+        details { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-top: 20px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
+        summary { font-size: 1.2rem; font-weight: bold; color: #f0ccff; outline: none; }
+        .inner-settings { padding-top: 20px; cursor: default; }
+        .inner-settings h4 { color: #d06bff; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; margin-top: 30px; }
+        .inner-settings p.hint { font-size: 0.9rem; color: #aaa; margin-bottom: 20px; text-align: right; margin-top: -10px; }
+        
+        /* File Upload Styles */
+        .file-upload-wrapper { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .file-upload-wrapper input[type="text"] { margin: 0; background: rgba(0,0,0,0.5); color: #ccc; }
+        .btn-add { background: #d06bff; color: white; border: none; width: 42px; height: 42px; border-radius: 8px; font-size: 1.8rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; flex-shrink: 0; }
+        .btn-add:hover { transform: scale(1.1); background: #e08bff; }
+        .btn-deploy { background: linear-gradient(45deg, #00c6ff, #0072ff); box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4); }
+        .btn-deploy:hover { transform: scale(1.02); box-shadow: 0 8px 25px rgba(0, 114, 255, 0.6); }
+        .blink { animation: blinker 1.5s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0.5; } }
+        .drag-over { border: 2px dashed #00c6ff !important; padding: 10px; border-radius: 12px; background: rgba(0, 198, 255, 0.1) !important; transition: 0.2s; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>لوحة المطور للتحكم الكامل 👾</h1>
+    <p>قم بتعديل بيانات ونصوص الموقع بالكامل من هنا، ثم اضغط "تحميل الإعدادات" وقم بوضع الملف <code>config.js</code> في مجلد موقع الزبون.</p>
+
+    <!-- 1. الأساسيات -->
+    <details open>
+        <summary>الأساسيات والوسائط (صور وفيديو)</summary>
+        <div class="inner-settings">
+            <div class="row">
+                <div style="flex:1;"><label>اسم الحبيبة (أو الصديقة):</label><input type="text" id="gfName" placeholder="مثال: اسم البنت"></div>
+                <div style="flex:1;"><label>اسم الدلع:</label><input type="text" id="petName" placeholder="مثال: دلعها"></div>
+                <div style="flex:1;"><label>اسم الحبيب (أنت):</label><input type="text" id="boyName" placeholder="مثال: اسمك"></div>
+            </div>
+            
+            <div class="form-group row" style="margin-top:20px;">
+                <div style="flex:1;">
+                    <label>عنوان الرابط والموقع (يظهر في أعلى المتصفح):</label>
+                    <input type="text" id="pageTitle" value="مفاجأة 🎁" placeholder="مثال: إلى حبيبتي...">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div>
+                    <label>تاريخ الميلاد (يوم - شهر - سنة)</label>
+                    <div style="display:flex; gap:10px;">
+                        <input type="number" id="bDay" value="23" placeholder="يوم">
+                        <input type="number" id="bMonth" value="12" placeholder="شهر">
+                        <input type="number" id="bYear" value="2007" placeholder="سنة">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div style="flex:2;">
+                    <label>الأسماء العائمة في الخلفية (مفصولة بفاصلة)</label>
+                    <input type="text" id="bgNames" value="💜, 🫀, 💌, ❤️🩹, Love 🦦">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>فيديو الخلفية (اضغط + لاختيار الفيديو وحفظه باسم video.mp4)</label>
+                <div class="file-upload-wrapper">
+                    <input type="text" id="bgVideo" value="video.mp4" readonly>
+                    <button class="btn-add" onclick="triggerFileInput('videoFile')">+</button>
+                    <input type="file" id="videoFile" style="display:none" onchange="processAndDownloadFile(this, 'video.mp4')">
+                </div>
+            </div>
+
+            <h4 style="margin-top:20px;">الصور المتحركة للهدايا (GIFs)</h4>
+            <div class="row">
+                <div>
+                    <label>الهدية 1:</label>
+                    <div class="file-upload-wrapper">
+                        <input type="text" id="gif1" value="1.gif" readonly>
+                        <button class="btn-add" onclick="triggerFileInput('fileGif1')">+</button>
+                        <input type="file" id="fileGif1" style="display:none" onchange="processAndDownloadFile(this, '1.gif')">
+                    </div>
+                </div>
+                <div>
+                    <label>الهدية 2:</label>
+                    <div class="file-upload-wrapper">
+                        <input type="text" id="gif2" value="2.gif" readonly>
+                        <button class="btn-add" onclick="triggerFileInput('fileGif2')">+</button>
+                        <input type="file" id="fileGif2" style="display:none" onchange="processAndDownloadFile(this, '2.gif')">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <label>الهدية 3:</label>
+                    <div class="file-upload-wrapper">
+                        <input type="text" id="gif3" value="3.gif" readonly>
+                        <button class="btn-add" onclick="triggerFileInput('fileGif3')">+</button>
+                        <input type="file" id="fileGif3" style="display:none" onchange="processAndDownloadFile(this, '3.gif')">
+                    </div>
+                </div>
+                <div>
+                    <label>الهدية 4:</label>
+                    <div class="file-upload-wrapper">
+                        <input type="text" id="gif4" value="4.gif" readonly>
+                        <button class="btn-add" onclick="triggerFileInput('fileGif4')">+</button>
+                        <input type="file" id="fileGif4" style="display:none" onchange="processAndDownloadFile(this, '4.gif')">
+                    </div>
+                </div>
+            </div>
+            
+            <h4 style="margin-top:20px;">ربط تيليجرام (الإشعارات)</h4>
+            <div class="row">
+                <div><label>Telegram Bot Token</label><input type="text" id="botToken" value="8396636697:AAGFw5qzD-3Fqsio9JmazCuzESYzmIcUvr8"></div>
+                <div><label>Chat ID</label><input type="text" id="chatId" value="545153196"></div>
+            </div>
+        </div>
+    </details>
+
+    <!-- 2. نصوص الموقع -->
+    <details>
+        <summary>إعدادات النصوص والأسئلة (تخصيص الكلمات بالكامل)</summary>
+        <div class="inner-settings">
+            <p class="hint">ملاحظة: يمكنك استخدام <code>{name}</code> لاسم الحبيبة، و <code>{petName}</code> لاسم الدلع، و <code>{boyName}</code> لاسمك. سيتم تبديلها تلقائياً.</p>
+            
+            <h4>الشاشة 1 (سؤال الهوية)</h4>
+            <div class="row"><div><label>العنوان:</label><input type="text" id="s1_title" value="سؤال مهم... 💜"></div></div>
+            <div class="row"><div><label>السؤال:</label><input type="text" id="s1_p" value="أنتِ حبيبتي {name}؟"></div></div>
+            <div class="row">
+                <div><label>زر الموافقة:</label><input type="text" id="s1_btnYes" value="نعم"></div>
+                <div><label>زر الرفض:</label><input type="text" id="s1_btnNo" value="لا"></div>
+            </div>
+            <div class="row"><div><label>رسالة الخطأ عند الرفض:</label><input type="text" id="s1_failMsg" value="جذابة انتي مو {name}!"></div></div>
+
+            <h4>الشاشة 2 (سؤال الميلاد)</h4>
+            <div class="row"><div><label>العنوان:</label><input type="text" id="s2_title" value="شلون اعرفج انتي {name}؟"></div></div>
+            <div class="row"><div><label>التوضيح:</label><input type="text" id="s2_p" value="اكتبي تاريخ ميلادج"></div></div>
+            <div class="row">
+                <div><label>الزر:</label><input type="text" id="s2_btn" value="تأكيد 💌"></div>
+                <div><label>رسالة الخطأ:</label><input type="text" id="s2_failMsg" value="انتي مو {name} حبيبتي!"></div>
+            </div>
+
+            <h4>سؤال الفيديو 1 (تفاعلي)</h4>
+            <div class="row"><div><label>عنوان الشاشة:</label><input type="text" id="v1_title" value="سؤال... 💜"></div></div>
+            <div class="row"><div><label>نص السؤال الأول:</label><input type="text" id="v1_p" value="حبيبتي {name} عندي اقتراح بسيط، موافقة لو لا؟"></div></div>
+            <div class="row">
+                <div><label>خيار (نعم):</label><input type="text" id="v1_btnYes" value="موافقة"></div>
+                <div><label>خيار (لا):</label><input type="text" id="v1_btnNo" value="لا"></div>
+            </div>
+            <div class="row"><div><label>رسالة "الرفض":</label><input type="text" id="v1_failMsg" value="يلا ولي!"></div></div>
+
+            <h4>سؤال الفيديو 2 (خيارات استقصائية)</h4>
+            <div class="row"><div><label>عنوان الشاشة:</label><input type="text" id="v2_title" value="عظيم! 👾"></div></div>
+            <div class="row"><div><label>نص السؤال الثاني:</label><input type="text" id="v2_p" value="شنو رايج نختار الخيار (أ) لو الخيار (ب)؟"></div></div>
+            <div class="row">
+                <div><label>خيار (أ):</label><input type="text" id="v2_btnA" value="خيار أ"></div>
+                <div><label>خيار (ب):</label><input type="text" id="v2_btnB" value="خيار ب"></div>
+            </div>
+
+            <h4>سؤال الفيديو 3 (تفرع الخيار أ)</h4>
+            <div class="row"><div><label>عنوان الشاشة:</label><input type="text" id="v3a_title" value="حلو! 🦦"></div></div>
+            <div class="row"><div><label>نص السؤال الثالث (أ):</label><input type="text" id="v3a_p" value="بما أنج اخترتي (أ)، شنو تفضلين الآن؟"></div></div>
+            <div class="row">
+                <div><label>تفضيل 1:</label><input type="text" id="v3a_btn1" value="شيء 1"></div>
+                <div><label>تفضيل 2:</label><input type="text" id="v3a_btn2" value="شيء 2"></div>
+            </div>
+
+            <h4>سؤال الفيديو 3 (تفرع الخيار ب)</h4>
+            <div class="row"><div><label>عنوان الشاشة:</label><input type="text" id="v3b_title" value="خوش فكرة! 🗿"></div></div>
+            <div class="row"><div><label>نص السؤال الثالث (ب):</label><input type="text" id="v3b_p" value="بما أنج اخترتي (ب)، وين نحب نطبق الفكرة؟"></div></div>
+            <div class="row">
+                <div><label>مكان 1:</label><input type="text" id="v3b_btn1" value="بالمول"></div>
+                <div><label>مكان 2:</label><input type="text" id="v3b_btn2" value="الحديقة"></div>
+            </div>
+
+            <h4>سؤال الوعد (تأكيدي)</h4>
+            <div class="row"><div><label>عنوان الشاشة:</label><input type="text" id="vp_title" value="سؤال مهم جداً 🫀"></div></div>
+            <div class="row"><div><label>نص السؤال (وعد):</label><input type="text" id="vp_p" value="توعديني تبقين تحبيني ؟"></div></div>
+            <div class="row">
+                <div><label>زر الموافقة:</label><input type="text" id="vp_btnYes" value="وعد"></div>
+                <div><label>زر الرفض:</label><input type="text" id="vp_btnNo" value="ما اوعدك"></div>
+            </div>
+            <div class="row"><div><label>رسالة الرفض:</label><input type="text" id="vp_failMsg" value="يلا نچبي ولي ماكو تصميم إلج"></div></div>
+
+            <h4>شاشة الرسالة السرية</h4>
+            <div class="row"><div><label>العنوان:</label><input type="text" id="vm_title" value="يا روحي انتي ❤️🩹"></div></div>
+            <div class="row"><div><label>الشرح:</label><input type="text" id="vm_p" value="كتبي رساله الي بس انا مراح اكدر اشوفهه (للذكرى بس)"></div></div>
+            <div class="row"><div><label>الزر:</label><input type="text" id="vm_btn" value="ارسال"></div></div>
+
+            <h4>شاشة الانتقال</h4>
+            <div class="row">
+                <div><label>العنوان:</label><input type="text" id="ve_title" value="اوكي يلا نبلش بالاسئلة الاساسية 💜"></div>
+                <div><label>الزر:</label><input type="text" id="ve_btn" value="التالي"></div>
+            </div>
+
+            <h4>شاشة المودة (قبل الهدايا)</h4>
+            <div class="row"><div><label>عنوان الشاشة:</label><input type="text" id="s3_title" value="حبيبتي {petName} مالت {boyName} ❤️🩹"></div></div>
+            <div class="row"><div><label>النص الترحيبي:</label><input type="text" id="s3_p" value="انا اموت عليج، وهذني هدايا مني الج، موافقة؟"></div></div>
+            <div class="row">
+                <div><label>زر الموافقة:</label><input type="text" id="s3_btnYes" value="موافقة"></div>
+                <div><label>زر الرفض:</label><input type="text" id="s3_btnNo" value="لا"></div>
+            </div>
+            <div class="row"><div><label>عقاب الرفض:</label><input type="text" id="s3_failMsg" value="اوك يلا ولي!"></div></div>
+
+            <h4>شاشة اختيار الهدايا</h4>
+            <div class="row"><div><label>عنوان الشاشة:</label><input type="text" id="s4_title" value="هدية مني الج {name} 💜"></div></div>
+            <div class="row"><div><label>نص الاختيار:</label><input type="text" id="s4_p" value="عندي 4 هدايا الج، اختاري رقم..."></div></div>
+        </div>
+    </details>
+
+    <!-- 3. إعدادات الأغاني المتقدمة -->
+    <details style="margin-top: 20px;">
+        <summary>إعدادات الهدايا الصوتية المتقدمة (الأغاني والمزامنة)</summary>
+        <div class="inner-settings">
+            <p class="hint">ملاحظة: يمكنك رفع أغانٍ جديدة وتحديد أوقاتها، والبحث عن كلماتها تلقائياً بالذكاء الاصطناعي لتتزامن مع الصوت.</p>
+            
+            <!-- Song 1 -->
+            <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h4 style="margin-top:0; color:#f0ccff;">الأغنية رقم (1) 🎵</h4>
+                <div class="row">
+                    <div>
+                        <label>ملف الصوت الحالي:</label>
+                        <div class="file-upload-wrapper">
+                            <input type="text" id="song1_src" value="song1.mp3" readonly>
+                            <button class="btn-add" onclick="triggerFileInput('fileSong1')">+</button>
+                            <input type="file" id="fileSong1" style="display:none" onchange="processAndDownloadFile(this, 'song1.mp3')">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div><label>ثانية البداية (Start):</label><input type="number" id="song1_start" value="0"></div>
+                    <div><label>ثانية النهاية (End) اختياري:</label><input type="number" id="song1_end" value=""></div>
+                </div>
+                <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
+                <label style="color:#20c997;">بحث سريع عن الكلمات (LRC AI):</label>
+                <div class="row" style="margin-bottom:10px;">
+                    <div style="flex:2;"><input type="text" id="song1_search" placeholder="اكتب اسم الأغنية والفنان للبحث (عربي/إنجليزي)..."></div>
+                    <div style="flex:1;"><button class="btn-submit" style="margin-top:0; padding:10px; font-size:1rem; background:linear-gradient(45deg,#20c997,#17a2b8);" onclick="searchLyrics('song1_search', 'song1_lyrics', event)">بحث 🔍</button></div>
+                </div>
+                <label>الكلمات المُتزامنة (بصيغة LRC):</label>
+                <textarea id="song1_lyrics" rows="5" style="width:100%; box-sizing:border-box; border-radius:8px; padding:10px; background:rgba(0,0,0,0.5); color:#fff; border:1px solid rgba(255,255,255,0.2); font-family:monospace;" placeholder="[00:15.30] الجملة الأولى...\n[00:20.10] الجملة الثانية..."></textarea>
+            </div>
+
+            <!-- Song 2 -->
+            <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h4 style="margin-top:0; color:#f0ccff;">الأغنية رقم (2) 🎵</h4>
+                <div class="row">
+                    <div>
+                        <label>ملف الصوت الحالي:</label>
+                        <div class="file-upload-wrapper">
+                            <input type="text" id="song2_src" value="song2.m4a" readonly>
+                            <button class="btn-add" onclick="triggerFileInput('fileSong2')">+</button>
+                            <input type="file" id="fileSong2" style="display:none" onchange="processAndDownloadFile(this, 'song2.m4a')">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div><label>ثانية البداية (Start):</label><input type="number" id="song2_start" value="25"></div>
+                    <div><label>ثانية النهاية (End) اختياري:</label><input type="number" id="song2_end" value="107"></div>
+                </div>
+                <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
+                <label style="color:#20c997;">بحث سريع عن الكلمات (LRC AI):</label>
+                <div class="row" style="margin-bottom:10px;">
+                    <div style="flex:2;"><input type="text" id="song2_search" placeholder="اكتب اسم الأغنية والفنان للبحث..."></div>
+                    <div style="flex:1;"><button class="btn-submit" style="margin-top:0; padding:10px; font-size:1rem; background:linear-gradient(45deg,#20c997,#17a2b8);" onclick="searchLyrics('song2_search', 'song2_lyrics', event)">بحث 🔍</button></div>
+                </div>
+                <label>الكلمات المُتزامنة (بصيغة LRC):</label>
+                <textarea id="song2_lyrics" rows="5" style="width:100%; box-sizing:border-box; border-radius:8px; padding:10px; background:rgba(0,0,0,0.5); color:#fff; border:1px solid rgba(255,255,255,0.2); font-family:monospace;" placeholder="[00:15.30] الجملة الأولى...\n[00:20.10] الجملة الثانية..."></textarea>
+            </div>
+
+            <!-- Song 3 -->
+            <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h4 style="margin-top:0; color:#f0ccff;">الأغنية رقم (3) 🎵</h4>
+                <div class="row">
+                    <div>
+                        <label>ملف الصوت الحالي:</label>
+                        <div class="file-upload-wrapper">
+                            <input type="text" id="song3_src" value="song3.mp3" readonly>
+                            <button class="btn-add" onclick="triggerFileInput('fileSong3')">+</button>
+                            <input type="file" id="fileSong3" style="display:none" onchange="processAndDownloadFile(this, 'song3.mp3')">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div><label>ثانية البداية (Start):</label><input type="number" id="song3_start" value="11"></div>
+                    <div><label>ثانية النهاية (End) اختياري:</label><input type="number" id="song3_end" value=""></div>
+                </div>
+                <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
+                <label style="color:#20c997;">بحث سريع عن الكلمات (LRC AI):</label>
+                <div class="row" style="margin-bottom:10px;">
+                    <div style="flex:2;"><input type="text" id="song3_search" placeholder="اكتب اسم الأغنية والفنان للبحث..."></div>
+                    <div style="flex:1;"><button class="btn-submit" style="margin-top:0; padding:10px; font-size:1rem; background:linear-gradient(45deg,#20c997,#17a2b8);" onclick="searchLyrics('song3_search', 'song3_lyrics', event)">بحث 🔍</button></div>
+                </div>
+                <label>الكلمات المُتزامنة (بصيغة LRC):</label>
+                <textarea id="song3_lyrics" rows="5" style="width:100%; box-sizing:border-box; border-radius:8px; padding:10px; background:rgba(0,0,0,0.5); color:#fff; border:1px solid rgba(255,255,255,0.2); font-family:monospace;" placeholder="[00:15.30] الجملة الأولى...\n[00:20.10] الجملة الثانية..."></textarea>
+            </div>
+
+            <!-- Song 4 -->
+            <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h4 style="margin-top:0; color:#f0ccff;">الأغنية رقم (4) 🎵</h4>
+                <div class="row">
+                    <div>
+                        <label>ملف الصوت الحالي:</label>
+                        <div class="file-upload-wrapper">
+                            <input type="text" id="song4_src" value="song4.m4a" readonly>
+                            <button class="btn-add" onclick="triggerFileInput('fileSong4')">+</button>
+                            <input type="file" id="fileSong4" style="display:none" onchange="processAndDownloadFile(this, 'song4.m4a')">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div><label>ثانية البداية (Start):</label><input type="number" id="song4_start" value="75"></div>
+                    <div><label>ثانية النهاية (End) اختياري:</label><input type="number" id="song4_end" value=""></div>
+                </div>
+                <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
+                <label style="color:#20c997;">بحث سريع عن الكلمات (LRC AI):</label>
+                <div class="row" style="margin-bottom:10px;">
+                    <div style="flex:2;"><input type="text" id="song4_search" placeholder="اكتب اسم الأغنية والفنان للبحث..."></div>
+                    <div style="flex:1;"><button class="btn-submit" style="margin-top:0; padding:10px; font-size:1rem; background:linear-gradient(45deg,#20c997,#17a2b8);" onclick="searchLyrics('song4_search', 'song4_lyrics', event)">بحث 🔍</button></div>
+                </div>
+                <label>الكلمات المُتزامنة (بصيغة LRC):</label>
+                <textarea id="song4_lyrics" rows="5" style="width:100%; box-sizing:border-box; border-radius:8px; padding:10px; background:rgba(0,0,0,0.5); color:#fff; border:1px solid rgba(255,255,255,0.2); font-family:monospace;" placeholder="[00:15.30] الجملة الأولى...\n[00:20.10] الجملة الثانية..."></textarea>
+            </div>
+        </div>
+    </details>
+
+    <!-- 3. النشر التلقائي -->
+    <details open style="border: 1px solid #00c6ff; background: rgba(0, 198, 255, 0.05); margin-top: 30px;">
+        <summary style="color: #00c6ff; text-shadow: 0 0 10px rgba(0, 198, 255, 0.5);">🚀 النشر التلقائي المباشر لـ GitHub (من الهاتف)</summary>
+        <div class="inner-settings">
+            <p class="hint" style="color:#ccc;">سيقوم النظام بتجميع الموقع وملفاته ورفعه كـ موقع جاهز للزبون وإنشاء رابط مباشر له.</p>
+            
+            <button class="btn-submit" onclick="saveDataLocally()" style="background: rgba(255,255,255,0.1); margin-bottom: 20px; font-size: 1rem; padding: 10px; box-shadow: none;">💾 حفظ الإعدادات مؤقتاً في متصفح الهاتف</button>
+
+            <div class="row">
+                <div><label>اسم المستخدم في GitHub:</label><input type="text" id="gh_user" placeholder="مثال: kakio123"></div>
+                <div><label>GitHub Token (PAT):</label><input type="password" id="gh_token" placeholder="ghp_XXXXXXXXXXXXXXXXXXXX"></div>
+            </div>
+            <div class="row">
+                <div style="flex:1;"><label>مستودع القالب الأصلي:</label><input type="text" id="gh_template" placeholder="مثال: kakio123/gift-master"></div>
+                <div style="flex:1;"><label>اسم مستودع الزبون:</label><input type="text" id="gh_repo" placeholder="مثال: shamoos-gift"></div>
+            </div>
+            
+            <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-top: 20px;">
+                <h4 style="margin-top: 0; color: #f0ccff;">خطوات النشر (لتجنب أخطاء التأخير السيرفر)</h4>
+                <button class="btn-submit btn-deploy" id="btn-step1" onclick="step1_createAndUpload()" style="font-size: 1rem; padding: 10px; margin-top: 10px;">1️⃣ نشر وإنشاء المستودع 📦</button>
+                <button class="btn-submit btn-deploy" id="btn-step2" onclick="step2_enablePages()" style="font-size: 1rem; padding: 10px; margin-top: 10px; opacity: 0.5;">2️⃣ تحويل المستودع لموقع (Pages) ⚙️</button>
+                <button class="btn-submit btn-deploy" id="btn-step3" onclick="step3_checkAndSendLink()" style="font-size: 1rem; padding: 10px; margin-top: 10px; opacity: 0.5;">3️⃣ الحصول على الرابط 🚀 (وإرساله للتليجرام)</button>
+            </div>
+            
+            <p id="deploy-status" style="margin-top: 15px; text-align: center; color: #ffeb3b; font-size: 1.1rem; font-weight: bold;"></p>
+        </div>
+    </details>
+
+    <hr style="border-color: rgba(255,255,255,0.1); margin: 30px 0;">
+    <p>أو للكمبيوتر فقط (الطريقة القديمة):</p>
+    <button class="btn-submit" style="background: rgba(255,255,255,0.1); box-shadow: none; margin-top: 0;" onclick="downloadConfig()">تحميل الإعدادات بالكامل (config.js) 💾</button>
+</div>
+
+<script>
+    function triggerFileInput(id) { document.getElementById(id).click(); }
+
+    function processAndDownloadFile(inputElem, targetName) {
+        if (inputElem.files && inputElem.files[0]) {
+            let textInput = inputElem.previousElementSibling.previousElementSibling;
+            if (textInput && textInput.tagName === 'INPUT') {
+                textInput.value = "📎 " + inputElem.files[0].name;
+                textInput.style.color = "#00c6ff";
+                textInput.style.fontWeight = "bold";
+            }
+        }
+    }
+
+    async function searchLyrics(inputId, textareaId, event) {
+        let query = document.getElementById(inputId).value.trim();
+        let btn = event.target;
+        if(!query) {
+            alert("اكتب اسم الأغنية للبحث أولاً!");
+            return;
+        }
+        let oldText = btn.innerText;
+        btn.innerText = "جاري البحث... ⏳";
+        btn.disabled = true;
+
+        try {
+            let res = await fetch(`https://lrclib.net/api/search?q=${encodeURIComponent(query)}`);
+            let data = await res.json();
+            
+            if(data && data.length > 0) {
+                let syncedFound = data.find(item => item.syncedLyrics);
+                if(syncedFound) {
+                    document.getElementById(textareaId).value = syncedFound.syncedLyrics;
+                    alert("✅ تم العثور على الكلمات المتزامنة بنجاح!");
+                } else if (data[0].plainLyrics) {
+                    document.getElementById(textareaId).value = data[0].plainLyrics;
+                    alert("⚠️ تم العثور على كلمات عادية فقط (غير متزامنة بالوقت). ستحتاج لإضافة توقيتاتها بوضع [mm:ss.xx] يدوياً لحفظ التزامن الدقيق.");
+                } else {
+                    throw new Error("لم يتم العثور على كلمات.");
+                }
+            } else {
+                throw new Error("لم يتم العثور على الأغنية.");
+            }
+        } catch(e) {
+            alert("❌ لم يتم العثور على كلمات بواسطة الذكاء الاصطناعي لهذه الأغنية. جرب كتابة اسم الفنان معها (مثال: 'كاظم الساهر انا وليلى').");
+        }
+        
+        btn.innerText = oldText;
+        btn.disabled = false;
+    }
+
+    function escapeJS(str) {
+        return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/`/g, '\\`');
+    }
+
+    function getSongVal(num) {
+        let srcEl = document.getElementById('song' + num + '_src');
+        if(!srcEl) return 'song' + num + '.mp3';
+        let sRaw = srcEl.value;
+        let inputFile = document.getElementById('fileSong' + num).files[0];
+        
+        if (inputFile) {
+            let parts = inputFile.name.split('.');
+            let ext = parts.length > 1 ? parts.pop().toLowerCase() : 'mp3';
+            return 'song' + num + '.' + ext;
+        }
+        
+        let expectedName = 'song' + num + (sRaw.toLowerCase().includes('.m4a') ? '.m4a' : '.mp3');
+        return (sRaw.includes('📎') || (!sRaw.includes('http') && sRaw !== '')) ? expectedName : sRaw;
+    }
+
+    function generateConfigString() {
+        let bgn = document.getElementById('bgNames').value.split(',').map(s => s.trim());
+        
+        let bgvRaw = document.getElementById('bgVideo').value;
+        let vVal = (document.getElementById('videoFile').files[0] || bgvRaw.includes('📎') || (!bgvRaw.includes('http') && bgvRaw !== '')) ? "video.mp4" : bgvRaw;
+        
+        let g1Raw = document.getElementById('gif1').value;
+        let g1Val = (document.getElementById('fileGif1').files[0] || g1Raw.includes('📎') || (!g1Raw.includes('http') && g1Raw !== '')) ? "1.gif" : g1Raw;
+        
+        let g2Raw = document.getElementById('gif2').value;
+        let g2Val = (document.getElementById('fileGif2').files[0] || g2Raw.includes('📎') || (!g2Raw.includes('http') && g2Raw !== '')) ? "2.gif" : g2Raw;
+
+        let g3Raw = document.getElementById('gif3').value;
+        let g3Val = (document.getElementById('fileGif3').files[0] || g3Raw.includes('📎') || (!g3Raw.includes('http') && g3Raw !== '')) ? "3.gif" : g3Raw;
+
+        let g4Raw = document.getElementById('gif4').value;
+        let g4Val = (document.getElementById('fileGif4').files[0] || g4Raw.includes('📎') || (!g4Raw.includes('http') && g4Raw !== '')) ? "4.gif" : g4Raw;
+
+        let content = `const SITE_CONFIG = {
+    // الأساسيات
+    pageTitle: "${escapeJS(document.getElementById('pageTitle') ? document.getElementById('pageTitle').value : 'مفاجأة 🎁')}",
+    girlfriendName: "${escapeJS(document.getElementById('gfName').value)}",
+    petName: "${escapeJS(document.getElementById('petName').value)}",
+    boyName: "${escapeJS(document.getElementById('boyName').value)}",
+    
+    // تاريخ الميلاد
+    birthDay: "${escapeJS(document.getElementById('bDay').value)}",
+    birthMonth: "${escapeJS(document.getElementById('bMonth').value)}",
+    birthYear: "${escapeJS(document.getElementById('bYear').value)}",
+    
+    // نصوص الخلفية
+    bgNames: ${JSON.stringify(bgn)},
+    bgVideo: "${escapeJS(vVal)}",
+    
+    // إعدادات تليجرام
+    telegramBotToken: "${escapeJS(document.getElementById('botToken').value)}",
+    telegramChatId: "${escapeJS(document.getElementById('chatId').value)}",
+    
+    // إعدادات الأغاني والكلمات المتزامنة
+    songsConfig: {
+        1: { src: "${escapeJS(getSongVal(1))}", start: ${document.getElementById('song1_start').value || 0}, end: ${document.getElementById('song1_end').value || 'null'}, lyrics: \`${escapeJS(document.getElementById('song1_lyrics').value)}\` },
+        2: { src: "${escapeJS(getSongVal(2))}", start: ${document.getElementById('song2_start').value || 0}, end: ${document.getElementById('song2_end').value || 'null'}, lyrics: \`${escapeJS(document.getElementById('song2_lyrics').value)}\` },
+        3: { src: "${escapeJS(getSongVal(3))}", start: ${document.getElementById('song3_start').value || 0}, end: ${document.getElementById('song3_end').value || 'null'}, lyrics: \`${escapeJS(document.getElementById('song3_lyrics').value)}\` },
+        4: { src: "${escapeJS(getSongVal(4))}", start: ${document.getElementById('song4_start').value || 0}, end: ${document.getElementById('song4_end').value || 'null'}, lyrics: \`${escapeJS(document.getElementById('song4_lyrics').value)}\` }
+    },
+
+    // الهدايا
+    giftGifs: {
+        1: "${escapeJS(g1Val)}",
+        2: "${escapeJS(g2Val)}",
+        3: "${escapeJS(g3Val)}",
+        4: "${escapeJS(g4Val)}"
+    },
+
+    // ==========================================
+    // نصوص وعناوين الصفحات (الأسئلة والخيارات)
+    // ==========================================
+
+    s1_title: "${escapeJS(document.getElementById('s1_title').value)}",
+    s1_p: "${escapeJS(document.getElementById('s1_p').value)}",
+    s1_btnYes: "${escapeJS(document.getElementById('s1_btnYes').value)}",
+    s1_btnNo: "${escapeJS(document.getElementById('s1_btnNo').value)}",
+    s1_failMsg: "${escapeJS(document.getElementById('s1_failMsg').value)}",
+
+    s2_title: "${escapeJS(document.getElementById('s2_title').value)}",
+    s2_p: "${escapeJS(document.getElementById('s2_p').value)}",
+    s2_btn: "${escapeJS(document.getElementById('s2_btn').value)}",
+    s2_failMsg: "${escapeJS(document.getElementById('s2_failMsg').value)}",
+
+    v1_title: "${escapeJS(document.getElementById('v1_title').value)}",
+    v1_p: "${escapeJS(document.getElementById('v1_p').value)}",
+    v1_btnYes: "${escapeJS(document.getElementById('v1_btnYes').value)}",
+    v1_btnNo: "${escapeJS(document.getElementById('v1_btnNo').value)}",
+    v1_failMsg: "${escapeJS(document.getElementById('v1_failMsg').value)}",
+
+    v2_title: "${escapeJS(document.getElementById('v2_title').value)}",
+    v2_p: "${escapeJS(document.getElementById('v2_p').value)}",
+    v2_btnA: "${escapeJS(document.getElementById('v2_btnA').value)}",
+    v2_btnB: "${escapeJS(document.getElementById('v2_btnB').value)}",
+
+    v3a_title: "${escapeJS(document.getElementById('v3a_title').value)}",
+    v3a_p: "${escapeJS(document.getElementById('v3a_p').value)}",
+    v3a_btn1: "${escapeJS(document.getElementById('v3a_btn1').value)}",
+    v3a_btn2: "${escapeJS(document.getElementById('v3a_btn2').value)}",
+
+    v3b_title: "${escapeJS(document.getElementById('v3b_title').value)}",
+    v3b_p: "${escapeJS(document.getElementById('v3b_p').value)}",
+    v3b_btn1: "${escapeJS(document.getElementById('v3b_btn1').value)}",
+    v3b_btn2: "${escapeJS(document.getElementById('v3b_btn2').value)}",
+
+    vp_title: "${escapeJS(document.getElementById('vp_title').value)}",
+    vp_p: "${escapeJS(document.getElementById('vp_p').value)}",
+    vp_btnYes: "${escapeJS(document.getElementById('vp_btnYes').value)}",
+    vp_btnNo: "${escapeJS(document.getElementById('vp_btnNo').value)}",
+    vp_failMsg: "${escapeJS(document.getElementById('vp_failMsg').value)}",
+
+    vm_title: "${escapeJS(document.getElementById('vm_title').value)}",
+    vm_p: "${escapeJS(document.getElementById('vm_p').value)}",
+    vm_btn: "${escapeJS(document.getElementById('vm_btn').value)}",
+
+    ve_title: "${escapeJS(document.getElementById('ve_title').value)}",
+    ve_btn: "${escapeJS(document.getElementById('ve_btn').value)}",
+
+    s3_title: "${escapeJS(document.getElementById('s3_title').value)}",
+    s3_p: "${escapeJS(document.getElementById('s3_p').value)}",
+    s3_btnYes: "${escapeJS(document.getElementById('s3_btnYes').value)}",
+    s3_btnNo: "${escapeJS(document.getElementById('s3_btnNo').value)}",
+    s3_failMsg: "${escapeJS(document.getElementById('s3_failMsg').value)}",
+
+    s4_title: "${escapeJS(document.getElementById('s4_title').value)}",
+    s4_p: "${escapeJS(document.getElementById('s4_p').value)}"
+};`;
+        return content;
+    }
+
+    function downloadConfig() {
+        let content = generateConfigString();
+        let blob = new Blob([content], { type: 'text/javascript' });
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'config.js';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        alert('تم تحميل الإعدادات بنجاح بصيغة config.js 🚀');
+    }
+
+    // --- GitHub Auto Deploy Logic ---
+    const toBase64 = file => new Promise((res, rej) => {
+        const reader = new FileReader();
+        reader.onload = () => res(reader.result.split(',')[1]);
+        reader.onerror = error => rej(error);
+        reader.readAsDataURL(file);
+    });
+
+    function utf8ToBase64(str) {
+        return btoa(unescape(encodeURIComponent(str)));
+    }
+
+    // --- Local Storage Save/Load ---
+    function saveDataLocally() {
+        const data = {};
+        const inputs = document.querySelectorAll('input[type="text"], input[type="number"], input[type="password"], textarea');
+        inputs.forEach(el => { if(el.id) data[el.id] = el.value; });
+        localStorage.setItem('adminDraft', JSON.stringify(data));
+        alert('تم حفظ الإعدادات مؤقتاً في متصفح هاتفك بنجاح! ✔️');
+    }
+
+    // --- 3-Step GitHub Deployment ---
+    async function step1_createAndUpload() {
+        const btn = document.getElementById('btn-step1');
+        const status = document.getElementById('deploy-status');
+        const owner = document.getElementById('gh_user').value.trim();
+        const token = document.getElementById('gh_token').value.trim();
+        const repo = document.getElementById('gh_repo').value.trim();
+        const template = document.getElementById('gh_template').value.trim();
+
+        if (!owner || !token || !repo || !template) {
+            alert("يرجى إدخال (المستخدم، التوكن، المستودع القالب، واسم مستودع الزبون) للبدء!");
+            return;
+        }
+
+        btn.disabled = true;
+        btn.classList.add('blink');
+        status.innerHTML = "1️⃣ جاري استنساخ القالب وتأسيس موقع الزبون... ⏳";
+
+        try {
+            // 1. Generate Repository from Template
+            let tplParts = template.split('/');
+            if(tplParts.length !== 2) throw new Error("يجب كتابة مستودع القالب بصيغة: username/repo");
+            
+            let repoRes = await fetch(`https://api.github.com/repos/${tplParts[0]}/${tplParts[1]}/generate`, {
+                method: 'POST',
+                headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+                body: JSON.stringify({ owner: owner, name: repo, description: "Client Gift Website", private: false })
+            });
+
+            if (!repoRes.ok) {
+                let err = await repoRes.json();
+                let errStr = JSON.stringify(err).toLowerCase();
+                if (errStr.includes('already exists') || errStr.includes('name already exists') || errStr.includes('is already taken')) {
+                    status.innerHTML = "⚠️ المستودع موجود مسبقاً، سيتم الاستمرار وتحديث ملفاته...";
+                } else {
+                    throw new Error(err.message || "فشل الاستنساخ! هل تأكدت أن المستودع الأصلي محدد كـ Template في إعداداته؟");
+                }
+            } else {
+                status.innerHTML = "✅ تم استنساخ موقع الزبون! جاري دمج الإعدادات والمرفقات الجديدة... ⏳";
+                await new Promise(r => setTimeout(r, 4500)); // GitHub Generation takes ~3-4 seconds
+            }
+
+            let filesToUpload = [];
+            
+            // Config
+            status.innerHTML = "⚙️ جاري تجهيز إعدادات الزبون (config.js)...";
+            filesToUpload.push({ path: 'config.js', content: utf8ToBase64(generateConfigString()) });
+
+            // تحديث index.html تلقائياً - جلب أحدث نسخة من القالب وتحديثها
+            try {
+                status.innerHTML = "📄 جاري تحديث ملف الموقع الرئيسي (index.html) بأحدث نسخة...";
+                let indexRes = await fetch(`https://api.github.com/repos/${tplParts[0]}/${tplParts[1]}/contents/index.html`, {
+                    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3.raw' }
+                });
+                if (indexRes.ok) {
+                    let indexContent = await indexRes.text();
+                    filesToUpload.push({ path: 'index.html', content: utf8ToBase64(indexContent) });
+                }
+            } catch(e) { console.log("Could not fetch index.html from template, skipping auto-update."); }
+
+            // ONLY push custom files heavily uploaded by the user from phone
+            const staticFiles = [
+                { name: 'video.mp4', inputId: 'videoFile' },
+                { name: '1.gif', inputId: 'fileGif1' },
+                { name: '2.gif', inputId: 'fileGif2' },
+                { name: '3.gif', inputId: 'fileGif3' },
+                { name: '4.gif', inputId: 'fileGif4' },
+                { name: getSongVal(1), inputId: 'fileSong1' },
+                { name: getSongVal(2), inputId: 'fileSong2' },
+                { name: getSongVal(3), inputId: 'fileSong3' },
+                { name: getSongVal(4), inputId: 'fileSong4' }
+            ];
+
+            let customMediaCount = 0;
+            for (let f of staticFiles) {
+                let fInput = document.getElementById(f.inputId);
+                
+                // التأكد من عدم فقدان الملفات بسبب تحديث الصفحة في متصفح الهاتف
+                if (fInput) {
+                    let textInput = fInput.previousElementSibling.previousElementSibling;
+                    if (textInput && textInput.tagName === 'INPUT' && textInput.value.includes('📎')) {
+                        if (!fInput.files || !fInput.files[0]) {
+                            status.innerHTML = "❌ الإجراء توقف: تم فقدان الملف المرفق.";
+                            btn.disabled = false;
+                            btn.classList.remove('blink');
+                            alert(`تنبيه: لقد قمت بتحديث الصفحة وتم نسيان/فقدان الملف (${textInput.value}) من الذاكرة المؤقتة للهاتف! \nيرجى الضغط على علامة (+) واختيار الملف مرة أخرى ثم المتابعة.`);
+                            return;
+                        }
+                    }
+                }
+
+                if (fInput && fInput.files && fInput.files[0]) {
+                    customMediaCount++;
+                    filesToUpload.push({ path: f.name, content: await toBase64(fInput.files[0]) });
+                }
+            }
+
+            status.innerHTML = `🚀 جاري رفع الإعدادات الجديدة (ومعها ${customMediaCount} ملف مرفق) إلى موقع الزبون... ⏳`;
+
+            let repoBranch = "main";
+            try {
+                let repoInfoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers: { 'Authorization': `token ${token}` } });
+                let repoInfo = await repoInfoRes.json();
+                if (repoInfo.default_branch) repoBranch = repoInfo.default_branch;
+            } catch(e) {}
+
+            let refRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${repoBranch}`, { headers: { 'Authorization': `token ${token}` } });
+            let refData = await refRes.json();
+            let commitSha = refData.object.sha;
+
+            let commitRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/commits/${commitSha}`, { headers: { 'Authorization': `token ${token}` }});
+            let commitData = await commitRes.json();
+            let baseTreeSha = commitData.tree.sha;
+
+            status.innerHTML = "✅ جاري رفع الملفات وتكوين الموقع (قد يستغرق وقتاً للملفات الكبيرة)... 🚀";
+            
+            // Upload sequentially to avoid mobile browser memory/network timeout crashes
+            let tree = [];
+            for (let i = 0; i < filesToUpload.length; i++) {
+                let f = filesToUpload[i];
+                status.innerHTML = `🚀 جاري رفع الملف (${i + 1} من ${filesToUpload.length})... الرجاء الانتظار ⏳`;
+                let blobRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/blobs`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: f.content, encoding: 'base64' })
+                });
+                if (!blobRes.ok) {
+                    let errText = await blobRes.text();
+                    console.error("Blob upload error:", errText);
+                    throw new Error(`عطل أثناء رفع الملف (${f.path})! تأكد من استقرار الإنترنت لديك أو حاول تقليل حجم الفيديو.`);
+                }
+                let blobSha = (await blobRes.json()).sha;
+                tree.push({ path: f.path, mode: '100644', type: 'blob', sha: blobSha });
+            }
+
+            let treeRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees`, {
+                method: 'POST',
+                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ base_tree: baseTreeSha, tree: tree })
+            });
+            let newTreeSha = (await treeRes.json()).sha;
+
+            let newCommitRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/commits`, {
+                method: 'POST',
+                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: "Automated Deploy: Client Website Ready", tree: newTreeSha, parents: [commitSha] })
+            });
+            let newCommitSha = (await newCommitRes.json()).sha;
+
+            await fetch(`https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${repoBranch}`, {
+                method: 'PATCH',
+                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sha: newCommitSha, force: true })
+            });
+
+            status.innerHTML = "✅ اكتمل التركيب ورفع التصميم في GitHub 100%! انتقل الآن للخطوة 2️⃣.";
+            document.getElementById('btn-step2').style.opacity = '1';
+
+        } catch (error) {
+            console.error(error);
+            status.innerHTML = "❌ ظهر خطأ بالخطوة 1: " + error.message;
+        }
+
+        btn.classList.remove('blink');
+        btn.disabled = false;
+    }
+
+    async function step2_enablePages() {
+        const btn = document.getElementById('btn-step2');
+        const status = document.getElementById('deploy-status');
+        const owner = document.getElementById('gh_user').value.trim();
+        const token = document.getElementById('gh_token').value.trim();
+        const repo = document.getElementById('gh_repo').value.trim();
+        
+        btn.disabled = true;
+        btn.classList.add('blink');
+        status.innerHTML = "⏳ الخطوة 2: جاري تفعيل خدمة Pages في المستودع...";
+
+        try {
+            let repoBranch = "main";
+            try {
+                let req = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers: { 'Authorization': `token ${token}` } });
+                let dat = await req.json();
+                if(dat.default_branch) repoBranch = dat.default_branch;
+            } catch(e) {}
+
+            let res = await fetch(`https://api.github.com/repos/${owner}/${repo}/pages`, {
+                method: 'POST',
+                headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+                body: JSON.stringify({ source: { branch: repoBranch, path: "/" } })
+            });
+
+            if(!res.ok) {
+                let er = await res.json();
+                if(er.message && (er.message.includes('already exists') || er.message.includes('configured'))) {
+                    status.innerHTML = "✅ خدمة Pages مفعلة مسبقاً! انتقل للخطوة الأخيرة 3️⃣.";
+                    document.getElementById('btn-step3').style.opacity = '1';
+                } else if(er.message && er.message.includes('Not Found')) {
+                    throw new Error("لم يتم العثور على الفرع بعد، يرجى الانتظار دقيقة والمحاولة ثانيةً.");
+                } else {
+                    throw new Error(er.message || "Failed to enable pages");
+                }
+            } else {
+                status.innerHTML = "✅ تم تفعيل خدمة Pages بنجاح! الرابط في طور البناء... انتقل الآن للخطوة 3️⃣.";
+                document.getElementById('btn-step3').style.opacity = '1';
+            }
+        } catch (error) {
+            status.innerHTML = "❌ خطأ في الخطوة 2: " + error.message;
+        }
+
+        btn.classList.remove('blink');
+        btn.disabled = false;
+    }
+
+    async function step3_checkAndSendLink() {
+        const btn = document.getElementById('btn-step3');
+        const status = document.getElementById('deploy-status');
+        const owner = document.getElementById('gh_user').value.trim();
+        const token = document.getElementById('gh_token').value.trim();
+        const repo = document.getElementById('gh_repo').value.trim();
+        
+        btn.disabled = true;
+        btn.classList.add('blink');
+        
+        const finalUrl = `https://${owner}.github.io/${repo}/`;
+        
+        try {
+            let attempt = 1;
+            let limit = 24; // Wait up to 24 * 5s = 120 seconds
+            let success = false;
+            
+            while(attempt <= limit && !success) {
+                status.innerHTML = `⏳ جاري فحص استجابة الرابط... (محاولة ${attempt} من ${limit})`;
+                
+                try {
+                    let buildRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/pages/builds/latest`, {
+                        headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' }
+                    });
+                    if(buildRes.ok) {
+                        let buildData = await buildRes.json();
+                        if(buildData.status === 'built') {
+                            success = true;
+                            break;
+                        }
+                    }
+                } catch(e) {}
+                
+                await new Promise(r => setTimeout(r, 5000));
+                attempt++;
+            }
+
+            if(success) {
+                status.innerHTML = `✅ اكتمل التجهيز النهائي!<br><br>رابط الزبون الجاهز:<br><a href="${finalUrl}" target="_blank" style="color:#f0ccff; font-size: 1.3rem;">${finalUrl}</a><br>`;
+                
+                // Attempt Telegram notification
+                let botToken = document.getElementById('botToken').value;
+                let chatId = document.getElementById('chatId').value;
+                if(botToken && chatId) {
+                    try {
+                        let tzURL = `https://api.telegram.org/bot${botToken}/sendMessage`;
+                        await fetch(tzURL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                chat_id: chatId,
+                                text: `🚀 اكتمل تجهيز موقع الزبون بنجاح!\n\nاسم المشروع: ${repo}\nرابط الموقع: ${finalUrl}`
+                            })
+                        });
+                        status.innerHTML += `<br><small style="color:#28a745;">(تم إرسال الرابط إلى البوت الخاص بك ✔️)</small>`;
+                    } catch(e) {}
+                }
+            } else {
+                status.innerHTML = `⚠️ استغرق التجهيز وقتاً أطول من المعتاد. <br>ربما سيعمل الرابط لاحقاً، جرب فتحه: <a href="${finalUrl}" target="_blank">${finalUrl}</a>`;
+            }
+        } catch (error) {
+            status.innerHTML = "❌ خطأ أثناء الفحص: " + error.message;
+        }
+        
+        btn.classList.remove('blink');
+        btn.disabled = false;
+    }
+
+    // --- Drag and Drop Logic ---
+    document.addEventListener('DOMContentLoaded', () => {
+        // Load Drafts
+        try {
+            let draft = localStorage.getItem('adminDraft');
+            if(draft) {
+                let data = JSON.parse(draft);
+                for(let key in data) {
+                    let el = document.getElementById(key);
+                    if(el) el.value = data[key];
+                }
+                document.getElementById('deploy-status').innerHTML = "تم استعادة البيانات المحفوظة من الزيارة السابقة ♻️";
+            }
+        } catch(e) {}
+
+        document.querySelectorAll('.file-upload-wrapper').forEach(wrapper => {
+            wrapper.addEventListener('dragover', e => {
+                e.preventDefault();
+                wrapper.classList.add('drag-over');
+            });
+            wrapper.addEventListener('dragleave', e => {
+                e.preventDefault();
+                wrapper.classList.remove('drag-over');
+            });
+            wrapper.addEventListener('drop', e => {
+                e.preventDefault();
+                wrapper.classList.remove('drag-over');
+                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                    let fileInput = wrapper.querySelector('input[type="file"]');
+                    if (fileInput) {
+                        fileInput.files = e.dataTransfer.files;
+                        // Trigger the onchange event
+                        fileInput.dispatchEvent(new Event('change'));
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
